@@ -5,7 +5,8 @@ import (
 	"math/cmplx"
 )
 
-func Fft(data []complex128) {
+func fft(data []complex128) {
+
 	if len(data) == 1 {
 		return
 	}
@@ -22,5 +23,20 @@ func Fft(data []complex128) {
 	for i := 0; i < hl; i++ {
 		data[2*i] = even[i]
 		data[2*i+1] = odd[i]
+	}
+}
+
+func Fft(data []complex128) {
+	fft(data)
+}
+
+func InvFft(data []complex128) {
+	for i := range data {
+		data[i] = complex(imag(data[i]),real(data[i]))
+	}
+	fft(data)
+	scale := 1.0/float64(len(data))
+	for i := range data {
+		data[i] = complex(imag(data[i])*scale,real(data[i])*scale)
 	}
 }
